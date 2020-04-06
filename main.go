@@ -4,11 +4,9 @@ import (
 	"fmt"
 	rethink "gopkg.in/rethinkdb/rethinkdb-go.v6"
 	"log"
-	"math/rand"
 	"real_time_go/config"
 	"real_time_go/database"
 	"real_time_go/model"
-	"strconv"
 	"time"
 )
 
@@ -22,9 +20,8 @@ func init() {
 func InsertData(ch chan<- string, session *rethink.Session) {
 	for  {
 		post := model.Post{
-			ID:     strconv.FormatInt(int64(rand.Int()), 10),
 			Author: "pratik ",
-			Body:   "post body",
+			Body:   time.Now().String(),
 			Title: "post title",
 		}
 

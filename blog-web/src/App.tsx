@@ -1,26 +1,53 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+interface IState {
+  data: any;
 }
+
+
+class App extends React.Component<{}, IState> {
+  ws: (WebSocket | null) = null;
+
+  state = {
+    data: ""
+  }
+
+  // constructor(props: any) {
+  //   super(props);
+  // }
+
+  componentDidMount() {
+    this.ws = new WebSocket("ws://localhost:8000/ws");
+    this.ws.onopen = this.sendData;
+    this.ws.onmessage = this.handleMessages;
+  }
+
+  sendData = () => {
+  }
+
+
+
+  handleMessages = (data: any) => {
+    console.log("new message", data);
+    this.setState({
+      data: data.data
+    })
+  }
+
+  render() {
+
+    return <div>{this.state.data}</div>
+  }
+
+  componentWillUnmount() {
+    if (this.ws) {
+      this.ws.close()
+    }
+  }
+
+
+}
+
 
 export default App;
